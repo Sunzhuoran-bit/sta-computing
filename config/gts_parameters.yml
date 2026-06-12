@@ -1,0 +1,21 @@
+parameters:
+  bitcoin:
+    symbol: BTC-USD
+    mu: -0.1216
+    beta_plus: 0.3155
+    beta_minus: 0.4066
+    alpha_plus: 0.7477
+    alpha_minus: 0.5446
+    lambda_plus: 0.2465
+    lambda_minus: 0.1748
+    source: Nzokem and Maposa 2025, Table 1
+  sp500:
+    symbol: ^GSPC
+    mu: -0.2494
+    beta_plus: 0.3286
+    beta_minus: 0.0886
+    alpha_plus: 0.7924
+    alpha_minus: 0.5422
+    lambda_plus: 1.2797
+    lambda_minus: 0.9371
+    source: Nzokem and Maposa 2025, Table 2

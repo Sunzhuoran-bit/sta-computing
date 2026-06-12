@@ -1,0 +1,19 @@
+Package: stacomputing
+Title: Shiny System for Cryptocurrency and Stock Market Volatility Analysis
+Version: 0.1.0
+Authors@R: c(
+    person("Sta Computing Team", role = c("aut", "cre"), email = "example@example.com")
+  )
+Description: R Shiny project for visualizing heavy-tailed financial returns,
+    comparing normal and GTS assumptions, estimating VaR and CVaR, and
+    demonstrating bootstrap, Monte Carlo, and permutation-test workflows.
+License: MIT
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    jsonlite,
+    shiny
+Suggests:
+    testthat
+Config/testthat/edition: 3
