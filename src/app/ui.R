@@ -5,10 +5,19 @@ ui <- shiny::fluidPage(
       shiny::selectInput(
         "asset",
         "Asset",
-        choices = c("Bitcoin" = "BTC-USD", "S&P 500" = "^GSPC"),
+        choices = c("Bitcoin" = "BTC-USD", "Ethereum" = "ETH-USD", "S&P 500" = "^GSPC", "SPY ETF" = "SPY"),
         selected = "BTC-USD"
       ),
       shiny::sliderInput("confidence", "Risk confidence level", min = 0.90, max = 0.99, value = 0.95, step = 0.01),
+      shiny::selectInput("crossAssetX", "Cross-asset X axis",
+        choices = c("Bitcoin" = "BTC-USD", "Ethereum" = "ETH-USD", "S&P 500" = "^GSPC", "SPY ETF" = "SPY"),
+        selected = "BTC-USD"
+      ),
+      shiny::selectInput("crossAssetY", "Cross-asset Y axis",
+        choices = c("Bitcoin" = "BTC-USD", "Ethereum" = "ETH-USD", "S&P 500" = "^GSPC", "SPY ETF" = "SPY"),
+        selected = "^GSPC"
+      ),
+      shiny::sliderInput("rollingWindow", "Rolling correlation window (days)", min = 20, max = 120, value = 60, step = 5),
       shiny::sliderInput("bootstrapB", "Bootstrap iterations", min = 50, max = 1000, value = 200, step = 50),
       shiny::sliderInput("mcSims", "Monte Carlo simulations", min = 500, max = 10000, value = 3000, step = 500),
       shiny::sliderInput("horizon", "Simulation horizon in days", min = 1, max = 60, value = 20, step = 1),
@@ -35,6 +44,10 @@ ui <- shiny::fluidPage(
         shiny::tabPanel("Tail Risk", shiny::plotOutput("tailPlot", height = 360), shiny::tableOutput("riskTable"), shiny::plotOutput("bootstrapPlot", height = 360)),
         shiny::tabPanel("Monte Carlo", shiny::plotOutput("mcPlot", height = 360), shiny::tableOutput("mcTable")),
         shiny::tabPanel("Permutation Test", shiny::tableOutput("permTable")),
+        shiny::tabPanel("Cross-Asset",
+          shiny::plotOutput("scatterPlot", height = 320),
+          shiny::plotOutput("rollingCorrPlot", height = 320)
+        ),
         shiny::tabPanel("Project Notes", shiny::tableOutput("gtsTable"))
       )
     )

@@ -34,21 +34,31 @@ install.packages(c("jsonlite", "shiny", "testthat"))
 
 ## 快速开始
 
-下载并处理数据：
+### Linux
+
+**一键运行**：
+
+```bash
+# 一键启动
+./run.sh
+```
+
+**或者分步执行**：
+
+```bash
+# 或分步执行
+Rscript src/scripts/download_data.R   # 下载数据
+Rscript src/scripts/run_app.R         # 启动 Shiny App
+Rscript tests/testthat.R              # 运行测试
+```
+
+
+
+### Windows
 
 ```powershell
 & "C:\Program Files\R\R-4.4.2\bin\Rscript.exe" src/scripts/download_data.R
-```
-
-启动 Shiny App：
-
-```powershell
 & "C:\Program Files\R\R-4.4.2\bin\Rscript.exe" src/scripts/run_app.R
-```
-
-运行测试：
-
-```powershell
 & "C:\Program Files\R\R-4.4.2\bin\Rscript.exe" tests/testthat.R
 ```
 

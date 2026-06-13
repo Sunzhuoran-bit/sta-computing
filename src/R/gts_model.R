@@ -1,16 +1,21 @@
 gts_parameter_table <- function() {
   data.frame(
-    asset_id = c("bitcoin", "sp500"),
-    symbol = c("BTC-USD", "^GSPC"),
-    label = c("Bitcoin", "S&P 500 Index"),
-    mu = c(-0.1216, -0.2494),
-    beta_plus = c(0.3155, 0.3286),
-    beta_minus = c(0.4066, 0.0886),
-    alpha_plus = c(0.7477, 0.7924),
-    alpha_minus = c(0.5446, 0.5422),
-    lambda_plus = c(0.2465, 1.2797),
-    lambda_minus = c(0.1748, 0.9371),
-    source = c("Nzokem and Maposa 2025 Table 1", "Nzokem and Maposa 2025 Table 2"),
+    asset_id = c("bitcoin", "ethereum", "sp500", "spy_etf"),
+    symbol = c("BTC-USD", "ETH-USD", "^GSPC", "SPY"),
+    label = c("Bitcoin", "Ethereum", "S&P 500 Index", "SPY ETF"),
+    mu = c(-0.1216, -0.4854, -0.2494, -0.2606),
+    beta_plus = c(0.3155, 0.3904, 0.3286, 0.3408),
+    beta_minus = c(0.4066, 0.4045, 0.0886, 0.0222),
+    alpha_plus = c(0.7477, 0.9582, 0.7924, 0.7877),
+    alpha_minus = c(0.5446, 0.8005, 0.5422, 0.5971),
+    lambda_plus = c(0.2465, 0.1667, 1.2797, 1.2885),
+    lambda_minus = c(0.1748, 0.1708, 0.9371, 1.0143),
+    source = c(
+      "Nzokem and Maposa 2025 Table 1",
+      "Nzokem and Maposa 2025 Table 1",
+      "Nzokem and Maposa 2025 Table 2",
+      "Nzokem and Maposa 2025 Table 2"
+    ),
     stringsAsFactors = FALSE
   )
 }

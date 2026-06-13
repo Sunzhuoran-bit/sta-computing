@@ -130,7 +130,7 @@ fetch_yahoo_prices <- function(symbol, start_date, end_date) {
 download_default_dataset <- function(
     start_date = "2021-06-12",
     end_date = "2026-06-12",
-    symbols = c("BTC-USD", "^GSPC")) {
+    symbols = c("BTC-USD", "ETH-USD", "^GSPC", "SPY")) {
   raw_dir <- path_from_root("data", "raw")
   processed_dir <- path_from_root("data", "processed")
   ensure_directory(raw_dir)

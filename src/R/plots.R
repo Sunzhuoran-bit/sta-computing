@@ -1,7 +1,63 @@
 asset_label <- function(symbol) {
   if (identical(symbol, "BTC-USD")) return("Bitcoin")
+  if (identical(symbol, "ETH-USD")) return("Ethereum")
   if (identical(symbol, "^GSPC")) return("S&P 500")
+  if (identical(symbol, "SPY")) return("SPY ETF")
   symbol
+}
+
+plot_cross_asset_scatter <- function(returns, symbol_x, symbol_y) {
+  x <- asset_returns(returns, symbol_x)
+  y <- asset_returns(returns, symbol_y)
+  aligned <- align_returns_by_date(returns)
+  sx <- as.character(symbol_x)
+  sy <- as.character(symbol_y)
+  if (sx %in% names(aligned) && sy %in% names(aligned)) {
+    x <- aligned[[sx]]
+    y <- aligned[[sy]]
+  }
+  keep <- is.finite(x) & is.finite(y)
+  x <- x[keep]
+  y <- y[keep]
+  plot(x, y,
+    pch = 16, cex = 0.5, col = "#1f78b480",
+    xlab = paste(asset_label(symbol_x), "daily log return (%)"),
+    ylab = paste(asset_label(symbol_y), "daily log return (%)"),
+    main = "Cross-Asset Return Scatter"
+  )
+  abline(lm(y ~ x), col = "#e31a1c", lwd = 2)
+  grid(col = "gray90")
+  legend("topleft",
+    legend = paste("r =", round(stats::cor(x, y), 4)),
+    bty = "n"
+  )
+}
+
+plot_rolling_correlation <- function(returns, symbol_x, symbol_y, window = 60) {
+  aligned <- align_returns_by_date(returns)
+  sx <- as.character(symbol_x)
+  sy <- as.character(symbol_y)
+  if (!all(c(sx, sy) %in% names(aligned))) return(NULL)
+  x <- aligned[[sx]]
+  y <- aligned[[sy]]
+  dates <- aligned$date
+  keep <- is.finite(x) & is.finite(y)
+  x <- x[keep]
+  y <- y[keep]
+  dates <- dates[keep]
+  if (length(x) < window) return(NULL)
+  rolling_r <- vapply(seq_len(length(x) - window + 1), function(i) {
+    idx <- i:(i + window - 1)
+    if (stats::sd(x[idx]) > 0 && stats::sd(y[idx]) > 0) stats::cor(x[idx], y[idx]) else NA_real_
+  }, numeric(1))
+  rolling_r <- c(rep(NA_real_, window - 1), rolling_r)
+  plot(dates, rolling_r,
+    type = "l", lwd = 2, col = "#6a3d9a",
+    xlab = "Date", ylab = paste(window, "day rolling correlation"),
+    main = paste("Rolling Correlation:", asset_label(symbol_x), "vs", asset_label(symbol_y))
+  )
+  abline(h = 0, lty = 2, col = "gray50")
+  grid(col = "gray90")
 }
 
 plot_price_history <- function(price_data) {

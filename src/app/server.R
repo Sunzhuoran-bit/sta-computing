@@ -124,6 +124,14 @@ server <- function(input, output, session) {
     )
   })
 
+  output$scatterPlot <- shiny::renderPlot({
+    plot_cross_asset_scatter(data_bundle()$returns, input$crossAssetX, input$crossAssetY)
+  })
+
+  output$rollingCorrPlot <- shiny::renderPlot({
+    plot_rolling_correlation(data_bundle()$returns, input$crossAssetX, input$crossAssetY, input$rollingWindow)
+  })
+
   output$gtsTable <- shiny::renderTable({
     gts_parameter_table()
   })
