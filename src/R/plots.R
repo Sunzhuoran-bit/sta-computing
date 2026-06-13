@@ -126,7 +126,7 @@ plot_return_histogram <- function(returns, symbol, gts_sample = NULL) {
   if (!is.null(gts_sample)) {
     lines(stats::density(gts_sample), col = "#e31a1c", lwd = 2)
   }
-  legend("topright", legend = c("Normal fit", "GTS simulation"), col = c("#1f78b4", "#e31a1c"), lwd = 2, bty = "n")
+  legend("topright", legend = c("Normal fit", "GTS simulation"), col = c("#1f78b4", "#e31a1c"), lwd = 2, bty = "n", inset = 0.02)
 }
 
 plot_qq_comparison <- function(returns, symbol, gts_grid = NULL) {
@@ -151,7 +151,7 @@ plot_qq_comparison <- function(returns, symbol, gts_grid = NULL) {
   points(gts_q, x, pch = 16, cex = 0.45, col = "#e31a1c80")
   abline(0, 1, lwd = 2, col = "gray40")
   grid(col = "gray90")
-  legend("topleft", legend = c("Normal", "GTS grid"), col = c("#1f78b4", "#e31a1c"), pch = 16, bty = "n")
+  legend("topleft", legend = c("Normal", "GTS grid"), col = c("#1f78b4", "#e31a1c"), pch = 16, bty = "n", inset = 0.02)
 }
 
 plot_tail_comparison <- function(returns, symbol) {
@@ -181,7 +181,7 @@ plot_bootstrap_distribution <- function(boot_vals, var_estimate) {
   grid(col = "gray90")
   legend("topright",
     legend = c("Original VaR", "95% CI bounds"),
-    col = c("#1f78b4", "#e31a1c"), lwd = 2, lty = c(1, 2), bty = "n"
+    col = c("#1f78b4", "#e31a1c"), lwd = 2, lty = c(1, 2), bty = "n", inset = 0.02
   )
 }
 
