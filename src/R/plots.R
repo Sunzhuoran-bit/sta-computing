@@ -152,6 +152,21 @@ plot_tail_comparison <- function(returns, symbol) {
   grid(col = "gray90")
 }
 
+plot_bootstrap_distribution <- function(boot_vals, var_estimate) {
+  hist(boot_vals,
+    breaks = 30, col = "#d8e2dc", border = "white",
+    main = "Bootstrap VaR Distribution",
+    xlab = "VaR loss (%)"
+  )
+  abline(v = var_estimate, col = "#1f78b4", lwd = 2)
+  abline(v = stats::quantile(boot_vals, c(0.025, 0.975), names = FALSE), col = "#e31a1c", lwd = 2, lty = 2)
+  grid(col = "gray90")
+  legend("topright",
+    legend = c("Original VaR", "95% CI bounds"),
+    col = c("#1f78b4", "#e31a1c"), lwd = 2, lty = c(1, 2), bty = "n"
+  )
+}
+
 plot_bootstrap_intervals <- function(intervals) {
   y <- intervals$var_estimate
   lower <- intervals$var_low

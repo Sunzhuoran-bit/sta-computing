@@ -84,14 +84,25 @@ server <- function(input, output, session) {
     )
   })
 
-  output$bootstrapPlot <- shiny::renderPlot({
-    intervals <- bootstrap_risk_intervals(
-      selected_returns(),
-      probs = c(input$confidence, 0.99),
-      b = input$bootstrapB,
-      seed = 2026
+  bootstrap_data <- shiny::reactive({
+    list(
+      percentile = bootstrap_risk_intervals(selected_returns(), probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
+      bca = bootstrap_risk_intervals_bca(selected_returns(), probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
+      var_dist = bootstrap_var_distribution(selected_returns(), prob = input$confidence, b = input$bootstrapB, seed = 2026)
     )
-    plot_bootstrap_intervals(intervals)
+  })
+
+  output$bootstrapPlot <- shiny::renderPlot({
+    plot_bootstrap_intervals(bootstrap_data()$percentile)
+  })
+
+  output$bootstrapDistPlot <- shiny::renderPlot({
+    est <- calculate_var_cvar(selected_returns(), input$confidence)
+    plot_bootstrap_distribution(bootstrap_data()$var_dist, est$var_loss)
+  })
+
+  output$bootstrapBcaTable <- shiny::renderTable({
+    rbind(bootstrap_data()$percentile, bootstrap_data()$bca)
   })
 
   simulations <- shiny::reactive({
