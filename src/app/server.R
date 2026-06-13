@@ -1,6 +1,11 @@
 server <- function(input, output, session) {
   data_bundle <- shiny::reactive({
     load_project_data()
+  }) |>
+    shiny::bindCache("data")
+
+  aligned_returns <- shiny::reactive({
+    align_returns_by_date(data_bundle()$returns)
   })
 
   available_assets <- shiny::reactive({
@@ -264,35 +269,30 @@ server <- function(input, output, session) {
     data <- data_bundle()$returns
     x <- data[data$symbol == "BTC-USD", ]
     y <- data[data$symbol == "^GSPC", ]
-    shiny::withProgress(
-      message = "Running permutation test",
-      detail = paste(input$permB, "permutations"),
-      value = 0.5,
-      transform(
-        permutation_test_returns(x, y, input$permStatistic, input$permB, seed = 2026),
-        observed_difference = round(observed_difference, 5),
-        p_value = round(p_value, 5)
-      )
+    id <- shiny::showNotification(
+      paste("Running permutation test with", input$permB, "permutations..."),
+      type = "default", duration = NULL
+    )
+    on.exit(shiny::removeNotification(id), add = TRUE)
+    transform(
+      permutation_test_returns(x, y, input$permStatistic, input$permB, seed = 2026),
+      observed_difference = round(observed_difference, 5),
+      p_value = round(p_value, 5)
     )
   })
 
   output$scatterPlot <- shiny::renderPlot({
     shiny::req(input$crossAssetX, input$crossAssetY)
-    shiny::withProgress(
-      message = "Computing cross-asset scatter",
-      value = 0.5,
-      plot_cross_asset_scatter(data_bundle()$returns, input$crossAssetX, input$crossAssetY)
-    )
+    id <- shiny::showNotification("Rendering cross-asset scatter...", type = "default", duration = NULL)
+    on.exit(shiny::removeNotification(id), add = TRUE)
+    plot_cross_asset_scatter(data_bundle()$returns, input$crossAssetX, input$crossAssetY)
   })
 
   output$rollingCorrPlot <- shiny::renderPlot({
     shiny::req(input$crossAssetX, input$crossAssetY, input$rollingWindow)
-    shiny::withProgress(
-      message = "Computing rolling correlation",
-      detail = paste("window =", input$rollingWindow, "days"),
-      value = 0.5,
-      plot_rolling_correlation(data_bundle()$returns, input$crossAssetX, input$crossAssetY, input$rollingWindow)
-    )
+    id <- shiny::showNotification("Computing rolling correlation...", type = "default", duration = NULL)
+    on.exit(shiny::removeNotification(id), add = TRUE)
+    plot_rolling_correlation(data_bundle()$returns, input$crossAssetX, input$crossAssetY, input$rollingWindow)
   })
 
   output$gtsTable <- shiny::renderTable({
