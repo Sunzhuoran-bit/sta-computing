@@ -40,7 +40,7 @@ ui <- shiny::fluidPage(
       shiny::verbatimTextOutput("dataStatus"),
       shiny::tabsetPanel(
         shiny::tabPanel("Data", shiny::plotOutput("pricePlot", height = 360), shiny::tableOutput("summaryTable")),
-        shiny::tabPanel("Distribution", shiny::plotOutput("histPlot", height = 360), shiny::plotOutput("qqPlot", height = 360)),
+        shiny::tabPanel("Distribution", shiny::plotOutput("histPlot", height = 360), shiny::plotOutput("qqPlot", height = 360), shiny::tableOutput("gofTable")),
         shiny::tabPanel("Tail Risk", shiny::plotOutput("tailPlot", height = 360), shiny::tableOutput("riskTable"), shiny::plotOutput("bootstrapPlot", height = 360)),
         shiny::tabPanel("Monte Carlo", shiny::plotOutput("mcPlot", height = 360), shiny::tableOutput("mcTable")),
         shiny::tabPanel("Permutation Test", shiny::tableOutput("permTable")),

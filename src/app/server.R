@@ -61,6 +61,14 @@ server <- function(input, output, session) {
     plot_qq_comparison(data_bundle()$returns, input$asset, get_grid(input$asset))
   })
 
+  output$gofTable <- shiny::renderTable({
+    returns <- data_bundle()$returns
+    grid <- get_grid(input$asset)
+    normal <- gof_test_normal(returns[returns$symbol == input$asset, ])
+    gts <- gof_test_gts(returns[returns$symbol == input$asset, ], grid)
+    rbind(normal, gts)
+  })
+
   output$tailPlot <- shiny::renderPlot({
     plot_tail_comparison(data_bundle()$returns, input$asset)
   })
