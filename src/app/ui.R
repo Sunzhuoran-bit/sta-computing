@@ -41,7 +41,8 @@ ui <- shiny::fluidPage(
       shiny::tabsetPanel(
         shiny::tabPanel("Dashboard",
           shiny::verbatimTextOutput("dashOverview"),
-          shiny::tableOutput("dashTable")
+          shiny::tableOutput("dashTable"),
+          shiny::downloadButton("downloadReport", "Download HTML Report")
         ),
         shiny::tabPanel("Data", shiny::uiOutput("pricePlotContainer"), shiny::tableOutput("summaryTable")),
         shiny::tabPanel("Distribution", shiny::plotOutput("histPlot", height = 360), shiny::plotOutput("qqPlot", height = 360), shiny::tableOutput("gofTable")),

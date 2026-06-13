@@ -68,6 +68,14 @@ server <- function(input, output, session) {
     do.call(rbind, rows)
   })
 
+  output$downloadReport <- shiny::downloadHandler(
+    filename = function() paste0("volatility_report_", Sys.Date(), ".html"),
+    content = function(file) {
+      data <- data_bundle()
+      generate_html_report(data$returns, data$prices, file)
+    }
+  )
+
   output$pricePlotContainer <- shiny::renderUI({
     if (requireNamespace("plotly", quietly = TRUE)) {
       plotly::plotlyOutput("pricePlotly", height = 360)
