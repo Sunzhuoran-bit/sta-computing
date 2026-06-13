@@ -76,6 +76,24 @@ plot_price_history <- function(price_data) {
     indexed_values[[symbols[i]]] <- price / price[which(is.finite(price))[1]] * 100
   }
 
+  if (requireNamespace("plotly", quietly = TRUE)) {
+    p <- plotly::plot_ly()
+    for (i in seq_along(symbols)) {
+      current <- price_data[price_data$symbol == symbols[i], ]
+      p <- plotly::add_lines(p, x = current$date, y = indexed_values[[symbols[i]]],
+        name = asset_label(symbols[i]), line = list(color = colors[i]),
+        hovertemplate = paste("Date: %{x}<br>Index: %{y:.2f}<extra>", asset_label(symbols[i]), "</extra>")
+      )
+    }
+    p <- plotly::layout(p,
+      title = "Indexed Price History",
+      xaxis = list(title = "Date"),
+      yaxis = list(title = "Indexed price, first observation = 100"),
+      hovermode = "x unified"
+    )
+    return(p)
+  }
+
   plot(NULL,
     xlim = range(price_data$date),
     ylim = range(unlist(indexed_values), finite = TRUE),
