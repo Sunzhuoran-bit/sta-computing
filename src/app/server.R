@@ -1,11 +1,6 @@
 server <- function(input, output, session) {
   data_bundle <- shiny::reactive({
     load_project_data()
-  }) |>
-    shiny::bindCache("data")
-
-  aligned_returns <- shiny::reactive({
-    align_returns_by_date(data_bundle()$returns)
   })
 
   available_assets <- shiny::reactive({
@@ -294,4 +289,13 @@ server <- function(input, output, session) {
   output$gtsTable <- shiny::renderTable({
     gts_parameter_table()
   })
+
+  shiny::outputOptions(output, "scatterPlot", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "rollingCorrPlot", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "histPlot", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "qqPlot", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "tailPlot", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "bootstrapPlot", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "bootstrapDistPlot", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "mcPlot", suspendWhenHidden = FALSE)
 }
