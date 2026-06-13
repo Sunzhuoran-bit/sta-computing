@@ -30,6 +30,44 @@ server <- function(input, output, session) {
     )
   })
 
+  output$dashOverview <- shiny::renderText({
+    data <- data_bundle()
+    ret <- data$returns
+    symbols <- unique(ret$symbol)
+    sprintf(
+      "Dashboard — Cryptocurrency and Stock Market Volatility Analysis\n%s assets analyzed\nData range: %s to %s\nTotal observations: %s",
+      length(symbols),
+      min(data$prices$date),
+      max(data$prices$date),
+      nrow(ret)
+    )
+  })
+
+  output$dashTable <- shiny::renderTable({
+    data <- data_bundle()
+    ret <- data$returns
+    aligned <- align_returns_by_date(ret)
+    symbols <- setdiff(names(aligned), "date")
+    matrix_ret <- as.matrix(aligned[, symbols, drop = FALSE])
+    corr <- stats::cor(matrix_ret, use = "pairwise.complete.obs")
+    rows <- lapply(symbols, function(s) {
+      x <- asset_returns(ret, s)
+      risk95 <- calculate_var_cvar(x, 0.95)
+      risk99 <- calculate_var_cvar(x, 0.99)
+      data.frame(
+        asset = asset_label(s),
+        observations = length(x),
+        volatility = round(stats::sd(x), 4),
+        var_95 = round(risk95$var_loss, 4),
+        cvar_95 = round(risk95$cvar_loss, 4),
+        var_99 = round(risk99$var_loss, 4),
+        cvar_99 = round(risk99$cvar_loss, 4),
+        stringsAsFactors = FALSE
+      )
+    })
+    do.call(rbind, rows)
+  })
+
   output$pricePlot <- shiny::renderPlot({
     plot_price_history(data_bundle()$prices)
   })

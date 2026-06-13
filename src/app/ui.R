@@ -39,6 +39,10 @@ ui <- shiny::fluidPage(
     shiny::mainPanel(
       shiny::verbatimTextOutput("dataStatus"),
       shiny::tabsetPanel(
+        shiny::tabPanel("Dashboard",
+          shiny::verbatimTextOutput("dashOverview"),
+          shiny::tableOutput("dashTable")
+        ),
         shiny::tabPanel("Data", shiny::plotOutput("pricePlot", height = 360), shiny::tableOutput("summaryTable")),
         shiny::tabPanel("Distribution", shiny::plotOutput("histPlot", height = 360), shiny::plotOutput("qqPlot", height = 360), shiny::tableOutput("gofTable")),
         shiny::tabPanel("Tail Risk",
