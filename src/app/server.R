@@ -283,15 +283,11 @@ server <- function(input, output, session) {
 
   output$scatterPlot <- shiny::renderPlot({
     shiny::req(input$crossAssetX, input$crossAssetY)
-    id <- shiny::showNotification("Rendering cross-asset scatter...", type = "default", duration = NULL)
-    on.exit(shiny::removeNotification(id), add = TRUE)
     plot_cross_asset_scatter(data_bundle()$returns, input$crossAssetX, input$crossAssetY)
   })
 
   output$rollingCorrPlot <- shiny::renderPlot({
     shiny::req(input$crossAssetX, input$crossAssetY, input$rollingWindow)
-    id <- shiny::showNotification("Computing rolling correlation...", type = "default", duration = NULL)
-    on.exit(shiny::removeNotification(id), add = TRUE)
     plot_rolling_correlation(data_bundle()$returns, input$crossAssetX, input$crossAssetY, input$rollingWindow)
   })
 

@@ -87,8 +87,8 @@ ui <- bslib::page_navbar(
 
   bslib::nav_panel("Cross-Asset",
     bslib::layout_columns(
-      bslib::card(bslib::card_header("Return Scatter"), shiny::plotOutput("scatterPlot"), full_screen = TRUE, min_height = 350),
-      bslib::card(bslib::card_header("Rolling Correlation"), shiny::plotOutput("rollingCorrPlot"), full_screen = TRUE, min_height = 350)
+      bslib::card(bslib::card_header("Return Scatter"), shiny::plotOutput("scatterPlot", height = "400px")),
+      bslib::card(bslib::card_header("Rolling Correlation"), shiny::plotOutput("rollingCorrPlot", height = "400px"))
     )
   ),
 
