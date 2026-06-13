@@ -20,15 +20,18 @@ simulate_portfolio <- function(
     gts_grids = NULL) {
   model <- match.arg(model)
   aligned <- align_returns_by_date(returns)
-  symbols <- setdiff(names(aligned), "date")
-  matrix_returns <- as.matrix(aligned[, symbols, drop = FALSE])
+  all_symbols <- setdiff(names(aligned), "date")
 
   if (is.null(weights)) {
-    weights <- rep(1 / length(symbols), length(symbols))
-    names(weights) <- symbols
+    weights <- rep(1 / length(all_symbols), length(all_symbols))
+    names(weights) <- all_symbols
   }
+
+  symbols <- intersect(all_symbols, names(weights))
+  if (length(symbols) == 0) stop("No matching symbols between data and weights.", call. = FALSE)
   weights <- weights[symbols]
   weights <- weights / sum(weights)
+  matrix_returns <- as.matrix(aligned[, symbols, drop = FALSE])
 
   if (!is.null(seed)) {
     set.seed(seed)
