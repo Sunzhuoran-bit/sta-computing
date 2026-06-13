@@ -15,5 +15,6 @@ Imports:
     jsonlite,
     shiny
 Suggests:
-    testthat
+    testthat,
+    markdown
 Config/testthat/edition: 3

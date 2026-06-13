@@ -54,7 +54,7 @@ Rscript -e '
   dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE, showWarnings = FALSE)
   .libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths()))
 
-  required <- c("jsonlite", "shiny", "testthat")
+  required <- c("jsonlite", "shiny", "markdown", "testthat")
   missing <- required[!vapply(required, requireNamespace, logical(1), quietly = TRUE)]
   if (length(missing) > 0) {
     cat("Missing R packages:", paste(missing, collapse = " "), "\n")
@@ -71,7 +71,7 @@ if [ "$status" -eq 99 ]; then
     Rscript -e '
       dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE, showWarnings = FALSE)
       .libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths()))
-      install.packages(c("jsonlite", "shiny", "testthat"), lib = Sys.getenv("R_LIBS_USER"), repos = "https://cloud.r-project.org")
+      install.packages(c("jsonlite", "shiny", "testthat", "markdown"), lib = Sys.getenv("R_LIBS_USER"), repos = "https://cloud.r-project.org")
     '
     echo ""
     STA_SHINY_LAUNCH_BROWSER=false Rscript src/scripts/run_app.R

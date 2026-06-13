@@ -48,7 +48,8 @@ ui <- shiny::fluidPage(
           shiny::plotOutput("scatterPlot", height = 320),
           shiny::plotOutput("rollingCorrPlot", height = 320)
         ),
-        shiny::tabPanel("Project Notes", shiny::tableOutput("gtsTable"))
+        shiny::tabPanel("GTS Parameters", shiny::tableOutput("gtsTable")),
+        shiny::tabPanel("Parameter Guide", shiny::includeMarkdown(file.path("docs", "parameter_guide.md")))
       )
     )
   )

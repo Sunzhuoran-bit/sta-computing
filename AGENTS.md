@@ -5,7 +5,7 @@
 ## Setup
 
 - R 4.4.2. On Linux use `Rscript` from PATH. On Windows use full path: `C:\Program Files\R\R-4.4.2\bin\Rscript.exe`.
-- Required packages: `jsonlite`, `shiny`, `testthat`
+- Required packages: `jsonlite`, `shiny`, `markdown`, `testthat`
 - Working directory **must be the project root** for all scripts.
 
 ## Commands (run from project root)
