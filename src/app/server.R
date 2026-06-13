@@ -88,9 +88,11 @@ server <- function(input, output, session) {
     plot_price_history(data_bundle()$prices)
   })
 
-  output$pricePlotly <- plotly::renderPlotly({
-    plot_price_history(data_bundle()$prices)
-  })
+  if (requireNamespace("plotly", quietly = TRUE)) {
+    output$pricePlotly <- plotly::renderPlotly({
+      plot_price_history(data_bundle()$prices)
+    })
+  }
 
   output$summaryTable <- shiny::renderTable({
     returns <- data_bundle()$returns
