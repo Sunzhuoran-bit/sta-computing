@@ -13,6 +13,8 @@ gof_test_normal <- function(returns) {
     distribution = "Normal",
     ks_statistic = round(as.numeric(ks$statistic), 6),
     ks_p_value = round(ks$p.value, 6),
+    ad_statistic = NA_real_,
+    ad_p_value = NA_real_,
     stringsAsFactors = FALSE
   )
 }
@@ -25,6 +27,8 @@ gof_test_gts <- function(returns, grid) {
       distribution = "GTS",
       ks_statistic = NA_real_,
       ks_p_value = NA_real_,
+      ad_statistic = NA_real_,
+      ad_p_value = NA_real_,
       stringsAsFactors = FALSE
     ))
   }
