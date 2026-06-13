@@ -1,11 +1,12 @@
 ui <- bslib::page_navbar(
-  title = "Cryptocurrency and Stock Market Volatility Analysis",
+  title = "Volatility Analysis",
 
   theme = bslib::bs_theme(
     bootswatch = "flatly",
     base_font = bslib::font_google("Inter")
   ),
 
+  bslib::nav_spacer(),
   bslib::nav_item(bslib::input_dark_mode(id = "dark_mode")),
 
   sidebar = bslib::sidebar(
@@ -59,24 +60,24 @@ ui <- bslib::page_navbar(
 
   bslib::nav_panel("Distribution",
     bslib::layout_columns(
-      bslib::card(bslib::card_header("Return Distribution"), shiny::plotOutput("histPlot", height = "100%"), full_screen = TRUE),
-      bslib::card(bslib::card_header("Q-Q Comparison"), shiny::plotOutput("qqPlot", height = "100%"), full_screen = TRUE)
+      bslib::card(bslib::card_header("Return Distribution"), shiny::plotOutput("histPlot"), full_screen = TRUE, min_height = 350),
+      bslib::card(bslib::card_header("Q-Q Comparison"), shiny::plotOutput("qqPlot"), full_screen = TRUE, min_height = 350)
     ),
     bslib::card(bslib::card_header("Goodness-of-Fit Tests"), shiny::tableOutput("gofTable"))
   ),
 
   bslib::nav_panel("Tail Risk",
-    bslib::card(bslib::card_header("Tail Survival"), shiny::plotOutput("tailPlot", height = "100%"), full_screen = TRUE),
+    bslib::card(bslib::card_header("Tail Survival"), shiny::plotOutput("tailPlot"), full_screen = TRUE, min_height = 350),
     bslib::layout_columns(
       bslib::card(bslib::card_header("VaR / CVaR"), shiny::tableOutput("riskTable")),
-      bslib::card(bslib::card_header("Bootstrap VaR Intervals"), shiny::plotOutput("bootstrapPlot", height = "100%"), full_screen = TRUE)
+      bslib::card(bslib::card_header("Bootstrap VaR Intervals"), shiny::plotOutput("bootstrapPlot"), full_screen = TRUE, min_height = 350)
     ),
-    bslib::card(bslib::card_header("Bootstrap Distribution"), shiny::plotOutput("bootstrapDistPlot", height = "100%"), full_screen = TRUE),
+    bslib::card(bslib::card_header("Bootstrap Distribution"), shiny::plotOutput("bootstrapDistPlot"), full_screen = TRUE, min_height = 300),
     bslib::card(bslib::card_header("Bootstrap CI Comparison"), shiny::tableOutput("bootstrapBcaTable"))
   ),
 
   bslib::nav_panel("Monte Carlo",
-    bslib::card(bslib::card_header("Portfolio Return Distribution"), shiny::plotOutput("mcPlot", height = "100%"), full_screen = TRUE),
+    bslib::card(bslib::card_header("Portfolio Return Distribution"), shiny::plotOutput("mcPlot"), full_screen = TRUE, min_height = 400),
     bslib::card(bslib::card_header("Simulation Summary"), shiny::tableOutput("mcTable"))
   ),
 
@@ -86,8 +87,8 @@ ui <- bslib::page_navbar(
 
   bslib::nav_panel("Cross-Asset",
     bslib::layout_columns(
-      bslib::card(bslib::card_header("Return Scatter"), shiny::plotOutput("scatterPlot", height = "100%"), full_screen = TRUE),
-      bslib::card(bslib::card_header("Rolling Correlation"), shiny::plotOutput("rollingCorrPlot", height = "100%"), full_screen = TRUE)
+      bslib::card(bslib::card_header("Return Scatter"), shiny::plotOutput("scatterPlot"), full_screen = TRUE, min_height = 350),
+      bslib::card(bslib::card_header("Rolling Correlation"), shiny::plotOutput("rollingCorrPlot"), full_screen = TRUE, min_height = 350)
     )
   ),
 
