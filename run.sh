@@ -19,7 +19,7 @@ confirm() {
 # ---- R ----
 R_DEPS=(libssl-dev libcurl4-openssl-dev libxml2-dev
          libfontconfig1-dev libharfbuzz-dev libfribidi-dev
-         libfreetype6-dev libicu-dev libtiff5-dev
+         libfreetype-dev libicu-dev libtiff5-dev
          libjpeg-dev libpng-dev libuv1-dev)
 
 if ! command -v Rscript &>/dev/null; then

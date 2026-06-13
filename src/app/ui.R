@@ -2,21 +2,10 @@ ui <- shiny::fluidPage(
   shiny::titlePanel("Cryptocurrency and Stock Market Volatility Analysis"),
   shiny::sidebarLayout(
     shiny::sidebarPanel(
-      shiny::selectInput(
-        "asset",
-        "Asset",
-        choices = c("Bitcoin" = "BTC-USD", "Ethereum" = "ETH-USD", "S&P 500" = "^GSPC", "SPY ETF" = "SPY"),
-        selected = "BTC-USD"
-      ),
+      shiny::uiOutput("assetSelector"),
       shiny::sliderInput("confidence", "Risk confidence level", min = 0.90, max = 0.99, value = 0.95, step = 0.01),
-      shiny::selectInput("crossAssetX", "Cross-asset X axis",
-        choices = c("Bitcoin" = "BTC-USD", "Ethereum" = "ETH-USD", "S&P 500" = "^GSPC", "SPY ETF" = "SPY"),
-        selected = "BTC-USD"
-      ),
-      shiny::selectInput("crossAssetY", "Cross-asset Y axis",
-        choices = c("Bitcoin" = "BTC-USD", "Ethereum" = "ETH-USD", "S&P 500" = "^GSPC", "SPY ETF" = "SPY"),
-        selected = "^GSPC"
-      ),
+      shiny::uiOutput("crossAssetXSelector"),
+      shiny::uiOutput("crossAssetYSelector"),
       shiny::sliderInput("rollingWindow", "Rolling correlation window (days)", min = 20, max = 120, value = 60, step = 5),
       shiny::sliderInput("bootstrapB", "Bootstrap iterations", min = 50, max = 1000, value = 200, step = 50),
       shiny::sliderInput("mcSims", "Monte Carlo simulations", min = 500, max = 10000, value = 3000, step = 500),

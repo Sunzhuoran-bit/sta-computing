@@ -3,6 +3,32 @@ server <- function(input, output, session) {
     load_project_data()
   })
 
+  available_assets <- shiny::reactive({
+    unique(data_bundle()$returns$symbol)
+  })
+
+  output$assetSelector <- shiny::renderUI({
+    symbols <- available_assets()
+    labels <- vapply(symbols, asset_label, character(1))
+    choices <- stats::setNames(symbols, labels)
+    shiny::selectInput("asset", "Asset", choices = choices, selected = symbols[1])
+  })
+
+  output$crossAssetXSelector <- shiny::renderUI({
+    symbols <- available_assets()
+    labels <- vapply(symbols, asset_label, character(1))
+    choices <- stats::setNames(symbols, labels)
+    shiny::selectInput("crossAssetX", "Cross-asset X axis", choices = choices, selected = symbols[1])
+  })
+
+  output$crossAssetYSelector <- shiny::renderUI({
+    symbols <- available_assets()
+    labels <- vapply(symbols, asset_label, character(1))
+    choices <- stats::setNames(symbols, labels)
+    sel <- if (length(symbols) >= 2) symbols[2] else symbols[1]
+    shiny::selectInput("crossAssetY", "Cross-asset Y axis", choices = choices, selected = sel)
+  })
+
   gts_grid_cache <- new.env(parent = emptyenv())
   get_grid <- function(symbol) {
     cache_key <- symbol_file_name(symbol)
@@ -15,6 +41,7 @@ server <- function(input, output, session) {
   }
 
   selected_returns <- shiny::reactive({
+    shiny::req(input$asset)
     data <- data_bundle()$returns
     data[data$symbol == input$asset, ]
   })
@@ -111,6 +138,9 @@ server <- function(input, output, session) {
   })
 
   output$histPlot <- shiny::renderPlot({
+    shiny::req(input$asset)
+    ret <- asset_returns(data_bundle()$returns, input$asset)
+    shiny::validate(shiny::need(length(ret) >= 2, "Not enough return data for this asset."))
     params <- get_gts_parameters(input$asset)
     grid <- get_grid(input$asset)
     gts_sample <- simulate_gts(3000, params, grid, seed = 2026)
@@ -118,10 +148,16 @@ server <- function(input, output, session) {
   })
 
   output$qqPlot <- shiny::renderPlot({
+    shiny::req(input$asset)
+    ret <- asset_returns(data_bundle()$returns, input$asset)
+    shiny::validate(shiny::need(length(ret) >= 2, "Not enough return data for this asset."))
     plot_qq_comparison(data_bundle()$returns, input$asset, get_grid(input$asset))
   })
 
   output$gofTable <- shiny::renderTable({
+    shiny::req(input$asset)
+    ret <- asset_returns(data_bundle()$returns, input$asset)
+    shiny::validate(shiny::need(length(ret) >= 2, "Not enough return data for this asset."))
     returns <- data_bundle()$returns
     grid <- get_grid(input$asset)
     normal <- gof_test_normal(returns[returns$symbol == input$asset, ])
@@ -130,10 +166,15 @@ server <- function(input, output, session) {
   })
 
   output$tailPlot <- shiny::renderPlot({
+    shiny::req(input$asset)
+    ret <- asset_returns(data_bundle()$returns, input$asset)
+    shiny::validate(shiny::need(length(ret) >= 2, "Not enough return data for this asset."))
     plot_tail_comparison(data_bundle()$returns, input$asset)
   })
 
   output$riskTable <- shiny::renderTable({
+    shiny::req(input$asset)
+    shiny::validate(shiny::need(nrow(selected_returns()) > 0, "No return data for this asset."))
     risk <- calculate_var_cvar(selected_returns(), probs = c(input$confidence, 0.99))
     transform(
       risk,
@@ -145,10 +186,13 @@ server <- function(input, output, session) {
   })
 
   bootstrap_data <- shiny::reactive({
+    shiny::req(input$asset)
+    ret <- selected_returns()
+    shiny::validate(shiny::need(sum(is.finite(ret$log_return)) >= 5, "Need at least 5 returns for bootstrap."))
     list(
-      percentile = bootstrap_risk_intervals(selected_returns(), probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
-      bca = bootstrap_risk_intervals_bca(selected_returns(), probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
-      var_dist = bootstrap_var_distribution(selected_returns(), prob = input$confidence, b = input$bootstrapB, seed = 2026)
+      percentile = bootstrap_risk_intervals(ret, probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
+      bca = bootstrap_risk_intervals_bca(ret, probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
+      var_dist = bootstrap_var_distribution(ret, prob = input$confidence, b = input$bootstrapB, seed = 2026)
     )
   })
 
@@ -166,6 +210,7 @@ server <- function(input, output, session) {
   })
 
   simulations <- shiny::reactive({
+    shiny::req(input$btcWeight, input$mcModel, input$mcSims, input$horizon)
     simulate_portfolio(
       data_bundle()$returns,
       weights = c("BTC-USD" = input$btcWeight, "^GSPC" = 1 - input$btcWeight),
@@ -204,10 +249,12 @@ server <- function(input, output, session) {
   })
 
   output$scatterPlot <- shiny::renderPlot({
+    shiny::req(input$crossAssetX, input$crossAssetY)
     plot_cross_asset_scatter(data_bundle()$returns, input$crossAssetX, input$crossAssetY)
   })
 
   output$rollingCorrPlot <- shiny::renderPlot({
+    shiny::req(input$crossAssetX, input$crossAssetY, input$rollingWindow)
     plot_rolling_correlation(data_bundle()$returns, input$crossAssetX, input$crossAssetY, input$rollingWindow)
   })
 
