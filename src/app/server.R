@@ -33,9 +33,15 @@ server <- function(input, output, session) {
   get_grid <- function(symbol) {
     cache_key <- symbol_file_name(symbol)
     if (!exists(cache_key, envir = gts_grid_cache, inherits = FALSE)) {
-      params <- get_gts_parameters(symbol)
-      grid <- build_gts_grid(params, x_grid = seq(-30, 30, length.out = 801), t_max = 80, n_t = 1024)
-      assign(cache_key, grid, envir = gts_grid_cache)
+      shiny::withProgress(
+        message = paste("Building GTS grid for", asset_label(symbol)),
+        value = 0.5,
+        {
+          params <- get_gts_parameters(symbol)
+          grid <- build_gts_grid(params, x_grid = seq(-30, 30, length.out = 801), t_max = 80, n_t = 1024)
+          assign(cache_key, grid, envir = gts_grid_cache)
+        }
+      )
     }
     get(cache_key, envir = gts_grid_cache, inherits = FALSE)
   }
@@ -143,7 +149,11 @@ server <- function(input, output, session) {
     shiny::validate(shiny::need(length(ret) >= 2, "Not enough return data for this asset."))
     params <- get_gts_parameters(input$asset)
     grid <- get_grid(input$asset)
-    gts_sample <- simulate_gts(3000, params, grid, seed = 2026)
+    gts_sample <- shiny::withProgress(
+      message = "Simulating GTS returns",
+      value = 0.5,
+      simulate_gts(3000, params, grid, seed = 2026)
+    )
     plot_return_histogram(data_bundle()$returns, input$asset, gts_sample)
   })
 
@@ -189,10 +199,18 @@ server <- function(input, output, session) {
     shiny::req(input$asset)
     ret <- selected_returns()
     shiny::validate(shiny::need(sum(is.finite(ret$log_return)) >= 5, "Need at least 5 returns for bootstrap."))
-    list(
-      percentile = bootstrap_risk_intervals(ret, probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
-      bca = bootstrap_risk_intervals_bca(ret, probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026),
-      var_dist = bootstrap_var_distribution(ret, prob = input$confidence, b = input$bootstrapB, seed = 2026)
+    shiny::withProgress(
+      message = "Bootstrapping risk intervals",
+      value = 0.1,
+      {
+        shiny::incProgress(0.2, detail = "Percentile CI")
+        pct <- bootstrap_risk_intervals(ret, probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026)
+        shiny::incProgress(0.4, detail = "BCa CI")
+        bca <- bootstrap_risk_intervals_bca(ret, probs = c(input$confidence, 0.99), b = input$bootstrapB, seed = 2026)
+        shiny::incProgress(0.3, detail = "Distribution")
+        vd <- bootstrap_var_distribution(ret, prob = input$confidence, b = input$bootstrapB, seed = 2026)
+        list(percentile = pct, bca = bca, var_dist = vd)
+      }
     )
   })
 
@@ -211,13 +229,18 @@ server <- function(input, output, session) {
 
   simulations <- shiny::reactive({
     shiny::req(input$btcWeight, input$mcModel, input$mcSims, input$horizon)
-    simulate_portfolio(
-      data_bundle()$returns,
-      weights = c("BTC-USD" = input$btcWeight, "^GSPC" = 1 - input$btcWeight),
-      model = input$mcModel,
-      n_sims = input$mcSims,
-      horizon = input$horizon,
-      seed = 2026
+    shiny::withProgress(
+      message = "Running Monte Carlo simulation",
+      detail = paste(input$mcSims, "paths,", input$mcModel, "model"),
+      value = 0.5,
+      simulate_portfolio(
+        data_bundle()$returns,
+        weights = c("BTC-USD" = input$btcWeight, "^GSPC" = 1 - input$btcWeight),
+        model = input$mcModel,
+        n_sims = input$mcSims,
+        horizon = input$horizon,
+        seed = 2026
+      )
     )
   })
 
