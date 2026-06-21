@@ -3,7 +3,7 @@ ui <- bslib::page_navbar(
 
   theme = bslib::bs_theme(
     bootswatch = "flatly",
-    base_font = bslib::font_google("Inter")
+    base_font = "system-ui"
   ),
 
   bslib::nav_spacer(),

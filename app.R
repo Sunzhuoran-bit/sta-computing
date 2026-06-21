@@ -1,10 +1,12 @@
-required <- c("jsonlite", "shiny", "markdown")
-missing <- required[!vapply(required, requireNamespace, logical(1), quietly = TRUE)]
-if (length(missing) > 0) {
+required_packages <- c("jsonlite", "shiny", "markdown", "bslib")
+missing_packages <- required_packages[
+  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+]
+if (length(missing_packages) > 0) {
   stop(
     "Missing required R packages: ",
-    paste(missing, collapse = ", "),
-    ". Run install.packages(c('jsonlite', 'shiny')) first.",
+    paste(missing_packages, collapse = ", "),
+    ". Run install.packages(c('jsonlite', 'shiny', 'markdown', 'bslib')) first.",
     call. = FALSE
   )
 }
