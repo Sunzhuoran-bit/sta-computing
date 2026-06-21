@@ -1,0 +1,88 @@
+CHENZHUOJI_WORK
+=================
+
+Author: ChenZhuo Ji
+Role: Individual contributor — setup, scripts, planning, and future enhancements
+Date: 2026-06-13
+
+---
+
+## Git Workflow
+
+- Commit locally whenever a logical unit is done.
+- **Do NOT push to remote until I confirm.**
+- Commit messages: concise, English, present-tense imperative.
+  Example: `add Linux one-click run script` / `refactor run.sh with interactive setup`
+
+---
+
+## Completed Tasks
+
+### 1. Linux One-Click Run Script (`run.sh`)
+
+File: `run.sh`
+
+- Checks if R is installed; if not, asks to install via apt.
+- Checks for missing system deps and installs if needed.
+- Checks for missing R packages; installs to user library with confirmation.
+- Launches Shiny App on http://127.0.0.1:3838 without opening browser.
+- Each step prompts [y/N] before acting.
+
+### 2. AGENTS.md — Project Instruction File
+
+File: `AGENTS.md`
+
+Compact instruction file for future OpenCode sessions.
+
+### 3. README.md Updated
+
+- Added Linux quick-start section alongside existing Windows commands.
+
+---
+
+## In Progress
+
+### 4. More Assets (ETH, SPY) + Cross-Asset Comparison
+
+- Add Ethereum and SPY ETF to assets dropdown.
+- GTS parameters from paper Table 1/2, no re-estimation.
+- Add cross-asset comparison tab: scatter plot, rolling correlation.
+
+### 5. Goodness-of-Fit Tests
+
+- KS test and Anderson-Darling test results in Distribution tab.
+- Compare normal vs GTS fit quality, aligned with paper's validation.
+
+### 6. Bootstrap Improvements
+
+- Add BCa (bias-corrected accelerated) bootstrap CI.
+- Show bootstrap distribution histogram alongside CI intervals.
+
+### 7. Dashboard Overview Page
+
+- Summary cards: latest VaR, current volatility, correlation.
+- Top-level snapshot tab.
+
+### 8. Interactive Charts
+
+- plotly/dygraphs for price history (zoom, range-select).
+- Hover tooltips on histograms and Q-Q plots.
+
+### 9. Report Export
+
+- Download current analysis as HTML/PDF via rmarkdown.
+
+### 10. UI Modernization (LAST)
+
+- bslib page_navbar, progress indicators, DT tables,
+  sidebar re-organization into collapsible groups.
+
+---
+
+## Notes
+
+- Ethereum GTS params (paper Table 1): mu=-0.4854, beta+=0.3904,
+  beta-=0.4045, alpha+=0.9582, alpha-=0.8005, lambda+=0.1667, lambda-=0.1708
+- SPY ETF GTS params (paper Table 2): mu=-0.2606, beta+=0.3408,
+  beta-=0.0222, alpha+=0.7877, alpha-=0.5971, lambda+=1.2885, lambda-=1.0143
+- All planned changes: commit locally, push only after user confirms.

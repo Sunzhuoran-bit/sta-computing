@@ -92,11 +92,5 @@ ui <- bslib::page_navbar(
     )
   ),
 
-  bslib::nav_panel("GTS Parameters",
-    bslib::card(bslib::card_header("Estimated GTS Parameters"), shiny::tableOutput("gtsTable"), full_screen = TRUE)
-  ),
 
-  bslib::nav_panel("Parameter Guide",
-    bslib::card(shiny::includeMarkdown(file.path("docs", "parameter_guide.md")))
-  )
 )

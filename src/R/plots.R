@@ -1,8 +1,8 @@
 asset_label <- function(symbol) {
   if (identical(symbol, "BTC-USD")) return("Bitcoin")
-  if (identical(symbol, "ETH-USD")) return("Ethereum")
+  # if (identical(symbol, "ETH-USD")) return("Ethereum")
   if (identical(symbol, "^GSPC")) return("S&P 500")
-  if (identical(symbol, "SPY")) return("SPY ETF")
+  # if (identical(symbol, "SPY")) return("SPY ETF")
   symbol
 }
 

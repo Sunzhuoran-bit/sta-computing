@@ -9,16 +9,16 @@ parameters:
     lambda_plus: 0.2465
     lambda_minus: 0.1748
     source: Nzokem and Maposa 2025, Table 1
-  ethereum:
-    symbol: ETH-USD
-    mu: -0.4854
-    beta_plus: 0.3904
-    beta_minus: 0.4045
-    alpha_plus: 0.9582
-    alpha_minus: 0.8005
-    lambda_plus: 0.1667
-    lambda_minus: 0.1708
-    source: Nzokem and Maposa 2025, Table 1
+  # ethereum:
+  #   symbol: ETH-USD
+  #   mu: -0.4854
+  #   beta_plus: 0.3904
+  #   beta_minus: 0.4045
+  #   alpha_plus: 0.9582
+  #   alpha_minus: 0.8005
+  #   lambda_plus: 0.1667
+  #   lambda_minus: 0.1708
+  #   source: Nzokem and Maposa 2025, Table 1
   sp500:
     symbol: ^GSPC
     mu: -0.2494
@@ -29,13 +29,13 @@ parameters:
     lambda_plus: 1.2797
     lambda_minus: 0.9371
     source: Nzokem and Maposa 2025, Table 2
-  spy_etf:
-    symbol: SPY
-    mu: -0.2606
-    beta_plus: 0.3408
-    beta_minus: 0.0222
-    alpha_plus: 0.7877
-    alpha_minus: 0.5971
-    lambda_plus: 1.2885
-    lambda_minus: 1.0143
-    source: Nzokem and Maposa 2025, Table 2
+  # spy_etf:
+  #   symbol: SPY
+  #   mu: -0.2606
+  #   beta_plus: 0.3408
+  #   beta_minus: 0.0222
+  #   alpha_plus: 0.7877
+  #   alpha_minus: 0.5971
+  #   lambda_plus: 1.2885
+  #   lambda_minus: 1.0143
+  #   source: Nzokem and Maposa 2025, Table 2

@@ -4,19 +4,19 @@ assets:
     label: Bitcoin
     source: Yahoo Finance Chart API
     fallback_source: CoinMarketCap historical data page
-  - id: ethereum
-    symbol: ETH-USD
-    label: Ethereum
-    source: Yahoo Finance Chart API
-    fallback_source: CoinMarketCap historical data page
+  # - id: ethereum
+  #   symbol: ETH-USD
+  #   label: Ethereum
+  #   source: Yahoo Finance Chart API
+  #   fallback_source: CoinMarketCap historical data page
   - id: sp500
     symbol: ^GSPC
     label: S&P 500 Index
     source: Yahoo Finance Chart API
-  - id: spy_etf
-    symbol: SPY
-    label: SPY ETF
-    source: Yahoo Finance Chart API
+  # - id: spy_etf
+  #   symbol: SPY
+  #   label: SPY ETF
+  #   source: Yahoo Finance Chart API
 
 default_window:
   start_date: 2021-06-12
